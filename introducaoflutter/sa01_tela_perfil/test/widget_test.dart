@@ -41,9 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Text(
           '$_counter', // Exibe o valor do contador
           style:
-              Theme.of(
-                context,
-              ).textTheme.headlineMedium, // Atualizado para headlineMedium
+              Theme.of(context)
+                  .textTheme
+                  .headlineMedium, // Substituindo headline4 por headlineMedium
         ),
       ),
       floatingActionButton: FloatingActionButton(
