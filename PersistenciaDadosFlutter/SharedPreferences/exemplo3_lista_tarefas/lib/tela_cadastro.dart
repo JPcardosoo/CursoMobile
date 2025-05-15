@@ -5,9 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TelaCadastro extends StatelessWidget{
   //atributos
-  TextEditingController _nomeController = TextEditingController();
-  TextEditingController _senhaController = TextEditingController();
-  TextEditingController _confirmacaoSenhaController = TextEditingController();
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
+  final TextEditingController _confirmacaoSenhaController = TextEditingController();
+
+  TelaCadastro({super.key});
 
   //métodos
   @override
@@ -45,19 +47,19 @@ class TelaCadastro extends StatelessWidget{
   }
   
   _cadastrarUsuario(BuildContext context) async{
-    String _nome = _nomeController.text.trim();
-    String _senha = _senhaController.text.trim();
-    String _confirmarSenha = _confirmacaoSenhaController.text.trim();
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    String nomeExistente = _prefs.getString(_nome) ?? "";
-    if(_nome.isEmpty || _senha.isEmpty || _confirmarSenha.isEmpty){
+    String nome = _nomeController.text.trim();
+    String senha = _senhaController.text.trim();
+    String confirmarSenha = _confirmacaoSenhaController.text.trim();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String nomeExistente = prefs.getString(nome) ?? "";
+    if(nome.isEmpty || senha.isEmpty || confirmarSenha.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Preencha Todos os Campos!!!")));
     } else if(nomeExistente.isNotEmpty){ //verifica se usurio já existe
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Usuário Já Cadastrado!!!")));
-    } else if(_senha != _confirmarSenha){ //verifica as senhas compatíveis
+    } else if(senha != confirmarSenha){ //verifica as senhas compatíveis
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("As Senhas Não Podem Ser Diferentes!!!")));
     } else{
-      _prefs.setString(_nome,_senha); //salva no cache a senha para o usuário
+      prefs.setString(nome,senha); //salva no cache a senha para o usuário
       Navigator.pushNamed(context, "/"); //navega para tela de login
     }
   }

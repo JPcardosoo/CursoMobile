@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TelaInicial extends StatefulWidget{
+  const TelaInicial({super.key});
+
   @override
   State<TelaInicial> createState() => _TelaInicialState();
 }
 
 class _TelaInicialState extends State<TelaInicial>{
   //atributos
-  TextEditingController _nomeController = TextEditingController(); // Controlador do Campo de Texto (TextField)
-  TextEditingController _senhaController = TextEditingController();
+  final TextEditingController _nomeController = TextEditingController(); // Controlador do Campo de Texto (TextField)
+  final TextEditingController _senhaController = TextEditingController();
   String _nome = "";
   String _senha = "";
   bool _darkMode = false;
@@ -30,20 +32,20 @@ class _TelaInicialState extends State<TelaInicial>{
 
   _carregarPreferencias() async{
     //conectar com o shared Preferences - instalar a dependencia
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {//mudança de estado da página
-      _nome = _prefs.getString("nome") ?? ""; // carrega "" caso não tenha nenhum armazenamento
-      _senha = _prefs.getString(_nome) ?? ""; //carrega "" caso não tenha nenhuma
-      _darkMode = _prefs.getBool("darkMode") ?? false;
-      _logado = _prefs.getBool("logado") ?? false;
+      _nome = prefs.getString("nome") ?? ""; // carrega "" caso não tenha nenhum armazenamento
+      _senha = prefs.getString(_nome) ?? ""; //carrega "" caso não tenha nenhuma
+      _darkMode = prefs.getBool("darkMode") ?? false;
+      _logado = prefs.getBool("logado") ?? false;
     });
   }
 
   _trocarTema() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _darkMode = !_darkMode; //inverte o valor da bool
-      _prefs.setBool("darkMode", _darkMode); // salva a preferencia na Memoria(cache)
+      prefs.setBool("darkMode", _darkMode); // salva a preferencia na Memoria(cache)
     });
 
   }
@@ -51,12 +53,12 @@ class _TelaInicialState extends State<TelaInicial>{
   _logar() async{
     _nome = _nomeController.text.trim();
     _senha = _senhaController.text.trim();
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (_nome.isEmpty || _senha.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Preencha todos os Campos"))); 
-    }else if(_prefs.getString(_nome) == _senha){
-      _prefs.setString("nome", _nome); //salva o nome no cache
-      _prefs.setBool("logado", true); // salva o login no cache
+    }else if(prefs.getString(_nome) == _senha){
+      prefs.setString("nome", _nome); //salva o nome no cache
+      prefs.setBool("logado", true); // salva o login no cache
       _nomeController.clear();
       _senhaController.clear();
       Navigator.pushNamed(context, "/tarefas"); //navega para tela de Tarefas

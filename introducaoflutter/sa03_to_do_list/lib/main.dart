@@ -5,13 +5,15 @@ void main() {
 }
 
 class ListaTarefas extends StatefulWidget {
+  const ListaTarefas({super.key});
+
   @override
   _ListaTarefasState createState() => _ListaTarefasState();
 }
 
 class _ListaTarefasState extends State<ListaTarefas> {
   final TextEditingController _tarefaController = TextEditingController();
-  List<Map<String, dynamic>> _tarefas = [];
+  final List<Map<String, dynamic>> _tarefas = [];
 
   // Função para exibir SnackBar
   void _mostrarSnackBar(String mensagem) {

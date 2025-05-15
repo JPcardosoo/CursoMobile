@@ -7,12 +7,14 @@ void main() {
 
 // Classe da página
 class UserNamePage extends StatefulWidget {
+  const UserNamePage({super.key});
+
   @override
   _UserNamePageState createState() => _UserNamePageState();
 }
 
 class _UserNamePageState extends State<UserNamePage> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   String _nomeSalvo = '';
 
   @override

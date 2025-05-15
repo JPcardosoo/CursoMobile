@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TelaTarefas extends StatefulWidget {
+  const TelaTarefas({super.key});
+
   @override
   State<TelaTarefas> createState() => _TelaTarefasState();
   //_TelaTarefasState createState() => _TelaTarefasState();
@@ -13,7 +15,7 @@ class _TelaTarefasState extends State<TelaTarefas> {
   bool _darkMode = false;
   bool _logado = false;
   List<String> _tarefas = [];
-  TextEditingController _tarefaController = TextEditingController();
+  final TextEditingController _tarefaController = TextEditingController();
 
   //métodos
   @override
@@ -24,12 +26,12 @@ class _TelaTarefasState extends State<TelaTarefas> {
   }
 
   _carregarPreferencias() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _nome = _prefs.getString("nome") ?? "";
-      _darkMode = _prefs.getBool("darkMode") ?? false;
-      _logado = _prefs.getBool("logado") ?? false;
-      _tarefas = _prefs.getStringList(_nome) ?? [];
+      _nome = prefs.getString("nome") ?? "";
+      _darkMode = prefs.getBool("darkMode") ?? false;
+      _logado = prefs.getBool("logado") ?? false;
+      _tarefas = prefs.getStringList(_nome) ?? [];
     });
     if (_logado) {
       Navigator.pushNamed(context, "/");
@@ -48,11 +50,11 @@ class _TelaTarefasState extends State<TelaTarefas> {
           actions: [
             IconButton(
               onPressed: () async {
-                SharedPreferences _prefs =
+                SharedPreferences prefs =
                     await SharedPreferences.getInstance();
                 _logado = false;
-                _prefs.setBool("logado", _logado);
-                _prefs.setString("nome", "");
+                prefs.setBool("logado", _logado);
+                prefs.setString("nome", "");
                 _carregarPreferencias();
               },
               icon: Icon(Icons.logout),
@@ -88,10 +90,10 @@ class _TelaTarefasState extends State<TelaTarefas> {
   }
 
   _adicionarTarefa() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (_tarefaController.text.trim().isNotEmpty) {
       _tarefas.add(_tarefaController.text.trim());
-      _prefs.setStringList(_nome, _tarefas);
+      prefs.setStringList(_nome, _tarefas);
       setState(() {
         _tarefaController.clear();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Tarefa adicionada com sucesso!")));

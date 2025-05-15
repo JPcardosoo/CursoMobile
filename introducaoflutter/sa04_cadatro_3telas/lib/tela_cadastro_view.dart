@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TelaCadastro extends StatefulWidget {
+  const TelaCadastro({super.key});
+
   @override
   _TelaCadastroState createState() => _TelaCadastroState();
 }
@@ -9,7 +11,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
   final _formKey = GlobalKey<FormState>(); // FormKey para validação
   String _nome = '';
   String _email = '';
-  String _senha = '';
+  final String _senha = '';
   String _genero = '';
   String _dataNascimento = '';
 

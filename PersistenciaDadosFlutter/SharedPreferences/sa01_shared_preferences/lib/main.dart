@@ -6,6 +6,8 @@ void main() {
 }
 
 class MeuPerfilApp extends StatelessWidget {
+  const MeuPerfilApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,6 +18,8 @@ class MeuPerfilApp extends StatelessWidget {
 }
 
 class MeuPerfilPage extends StatefulWidget {
+  const MeuPerfilPage({super.key});
+
   @override
   _MeuPerfilPageState createState() => _MeuPerfilPageState();
 }
