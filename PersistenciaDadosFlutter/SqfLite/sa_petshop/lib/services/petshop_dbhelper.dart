@@ -1,3 +1,5 @@
+//classe de ajdua para conexão com db
+
 import 'package:sa_petshop/models/consulta_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -90,24 +92,24 @@ class PetShopDBHelper {
 
   //CRUD e CRIAR o Banco de Dados das Consultas
 
-  Future<int> insertConsulta(Consulta consulta) async {
+  Future<int> insertConsulta(Consulta consulta) async{
     final db = await database;
-    return await db.insert("consultas", consulta.toMap());
+    return await db.insert("consultas", consulta.toMap()); //insere a consulta no BD
   }
 
-  Future<List<Consulta>> getConsultasForPet(int petId) async {
+  Future<List<Consulta>> getConsultasForPet(int petId) async{
     final db = await database;
-
-    List<Map<String, dynamic>> maps = await db.query(
-      "consultas",
-      where: "pet_id =?",
-      whereArgs: [petId],
-    );
-    return maps.map((e) => Consulta.fromMap(e)).toList();
+    //consluta por PEt especifico
+    List<Map<String,dynamic>> maps =  await db.query(
+      "consultas", where: "pet_id =?", whereArgs: [petId]);
+    //converter a map para obj
+    return maps.map((e)=>Consulta.fromMap(e)).toList();
+    //toList() -> forma abreviada de escrever um laço de repetição (forEach)
   }
 
-  Future<int> deleteConsulta(int id) async {
+  Future<int> deleteConsulta(int id) async{
     final db = await database;
-    return db.delete("consultas", where: "id=?", whereArgs: [id]);
+    return db.delete("consultas",where: "id=?",whereArgs: [id]);
+    // delete from table consultas where id = ? , 
   }
 }

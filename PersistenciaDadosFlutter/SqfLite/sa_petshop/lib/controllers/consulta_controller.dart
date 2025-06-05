@@ -6,15 +6,16 @@ class ConsultaController {
 
   //métodos do Crud
 
-  Future<int> createConsulta(Consulta consulta) async {
+  //retrona o nº do id que foi inserido
+  Future<int> createConsulta(Consulta consulta) async{
     return _dbHelper.insertConsulta(consulta);
   }
 
-  Future<List<Consulta>> readConsultasForPet(int petId) async {
+  Future<List<Consulta>> readConsultaForPet(int petId) async{
     return _dbHelper.getConsultasForPet(petId);
   }
-
-  Future<int> deleteConsulta(int id) async {
+  //retrona o id da consluta que foi deletada
+  Future<int> deleteConsulta(int id) async{
     return _dbHelper.deleteConsulta(id);
   }
 }

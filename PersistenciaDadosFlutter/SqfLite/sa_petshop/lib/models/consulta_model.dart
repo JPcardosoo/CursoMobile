@@ -4,7 +4,7 @@ class Consulta {
   //atributos
   final int? id;
   final int petId;
-  final DateTime dataHora; 
+  final DateTime dataHora; // obj é dateTime -> BD é string 
   final String tipoServico;
   final String observacao;
 
@@ -38,6 +38,7 @@ class Consulta {
       observacao: map["observacao"] as String); //pode ser nulo
   }
 
+  // método formatar data e hora em formato Brasil
   String get dataHoraFormatada{
     final DateFormat formatter = DateFormat("dd/MM/yyyy HH:mm");
     return formatter.format(dataHora);

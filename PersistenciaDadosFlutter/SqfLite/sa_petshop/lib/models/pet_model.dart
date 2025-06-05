@@ -2,7 +2,7 @@
 
 class Pet{
   //atributos
-  final int? id; 
+  final int? id; //permite ser nulo
   final String nome;
   final String raca;
   final String nomeDono;
@@ -15,6 +15,8 @@ class Pet{
     required this.nomeDono,
     required this.telefoneDono
   });
+
+  //métodos do conversão -> obj-> BD : BD->obj
 
   Map<String,dynamic> toMap(){
     return{

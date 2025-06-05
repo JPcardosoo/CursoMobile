@@ -6,6 +6,8 @@ import 'package:sa_petshop/models/pet_model.dart';
 import 'package:sa_petshop/view/home_screen.dart';
 
 class CadastroPetScreen extends StatefulWidget {
+  const CadastroPetScreen({super.key});
+
   //tela dinamica - mudanças de estado deposi da construção inicial
   @override
   State<StatefulWidget> createState() => _CadastroPetScreenState(); //chama a mudança

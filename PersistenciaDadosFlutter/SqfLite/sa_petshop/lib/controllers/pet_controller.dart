@@ -5,7 +5,7 @@ import '../models/pet_model.dart';
 class PetController {
   final PetShopDBHelper _dbHelper = PetShopDBHelper();
 
-  // Métodos controllers
+  //métodos controllers
 
   Future<int> createPet(Pet pet) async{
     return _dbHelper.insertPet(pet);
