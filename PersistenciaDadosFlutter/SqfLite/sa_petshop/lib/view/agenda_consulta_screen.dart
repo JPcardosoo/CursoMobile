@@ -6,7 +6,7 @@ import 'package:sa_petshop/models/consulta_model.dart';
 class AgendaConsultaScreen extends StatefulWidget {
   final int petId;
 
-  AgendaConsultaScreen({super.key, required this.petId});
+  const AgendaConsultaScreen({super.key, required this.petId});
 
   @override
   State<StatefulWidget> createState() {
