@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../controllers/contact_controller.dart';
 import '../models/contact_model.dart';
 import '../models/contact_field_model.dart';
-import 'home_contato_screen.dart'; // Corrigido o import
+import 'home_contato_screen.dart'; 
 
 class CadastroContatoScreen extends StatefulWidget {
   const CadastroContatoScreen({super.key});
@@ -21,23 +21,22 @@ class _CadastroContatoScreenState extends State<CadastroContatoScreen> {
 
   final List<ContactField> _camposAdicionais = [];
 
-  // Adiciona campo extra
   void _adicionarCampoAdicional() async {
     String tipo = '';
     String valor = '';
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Adicionar Campo Adicional"),
+        title: Text("Campo Adicional"),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              decoration: InputDecoration(labelText: "Tipo (ex: Endereço, Aniversário)"),
+              decoration: InputDecoration(labelText: "Tipo (ex: Outro telefone, Endereço, Aniversário)"),
               onChanged: (v) => tipo = v,
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: "Valor"),
+              decoration: InputDecoration(labelText: "Observações"),
               onChanged: (v) => valor = v,
             ),
           ],
@@ -48,7 +47,7 @@ class _CadastroContatoScreenState extends State<CadastroContatoScreen> {
               if (tipo.isNotEmpty) {
                 setState(() {
                   _camposAdicionais.add(ContactField(
-                    contactId: 0, // será atualizado após salvar o contato
+                    contactId: 0, 
                     tipo: tipo,
                     valor: valor,
                   ));
@@ -62,8 +61,7 @@ class _CadastroContatoScreenState extends State<CadastroContatoScreen> {
       ),
     );
   }
-
-  // Salvar o contato e os campos adicionais
+  
   Future<void> _salvarContato() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();

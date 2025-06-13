@@ -19,26 +19,27 @@ class _CadastroContatoScreenState extends State<CadastroContatoScreen> {
   String _email = '';
   final List<ContactField> _camposAdicionais = [];
 
-  // Adiciona campo extra
   void _adicionarCampoAdicional() async {
     String tipo = '';
     String valor = '';
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Campo Adicional"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              decoration: InputDecoration(labelText: "Tipo (ex: Outro telefone, Endereço, Aniversário)"),
-              onChanged: (v) => tipo = v,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: "observações"),
-              onChanged: (v) => valor = v,
-            ),
-          ],
+        title: Text("Observações"),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(labelText: "Tipo (ex: Outro telefone, Endereço, Aniversário)"),
+                onChanged: (v) => tipo = v,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "Observações"),
+                onChanged: (v) => valor = v,
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -46,7 +47,7 @@ class _CadastroContatoScreenState extends State<CadastroContatoScreen> {
               if (tipo.isNotEmpty) {
                 setState(() {
                   _camposAdicionais.add(ContactField(
-                    contactId: 0, // será atualizado após salvar o contato
+                    contactId: 0, 
                     tipo: tipo,
                     valor: valor,
                   ));
@@ -61,7 +62,6 @@ class _CadastroContatoScreenState extends State<CadastroContatoScreen> {
     );
   }
 
-  // Salva o contato e os campos adicionais
   Future<void> _salvarContato() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -112,14 +112,14 @@ class _CadastroContatoScreenState extends State<CadastroContatoScreen> {
                 onSaved: (v) => _email = v ?? '',
               ),
               SizedBox(height: 20),
-              Text("Campos Adicionais:", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("Observações:", style: TextStyle(fontWeight: FontWeight.bold)),
               ..._camposAdicionais.map((campo) => ListTile(
                     title: Text("${campo.tipo}: ${campo.valor}"),
                   )),
               TextButton.icon(
                 onPressed: _adicionarCampoAdicional,
                 icon: Icon(Icons.add),
-                label: Text("Adicionar Campo"),
+                label: Text("Adicionar Observação"),
               ),
               SizedBox(height: 20),
               ElevatedButton(

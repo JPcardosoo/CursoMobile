@@ -45,16 +45,16 @@ class _DetalheContatoScreenState extends State<DetalheContatoScreen> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Adicionar Campo Adicional"),
+        title: Text("Campo Adicional"),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              decoration: InputDecoration(labelText: "Tipo (ex: Endereço, Aniversário)"),
+              decoration: InputDecoration(labelText: "Tipo (ex: Outro telefone, Endereço, Aniversário)"),
               onChanged: (v) => tipo = v,
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: "Valor"),
+              decoration: InputDecoration(labelText: "Observações"),
               onChanged: (v) => valor = v,
             ),
           ],
