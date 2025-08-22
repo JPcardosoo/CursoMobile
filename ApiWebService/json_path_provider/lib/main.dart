@@ -71,11 +71,13 @@ class _ProdutoPageState extends State<ProdutoPage> {
   void _adicionarProduto() {
     String nome = _nomeProdutoController.text.trim();
     String valorStr = _valorProdutoController.text.trim();
-    if (nome.isEmpty || valorStr.isEmpty)
+    if (nome.isEmpty || valorStr.isEmpty) {
       return; // interrompe o método -> caso algum vazio
+    }
     double? valor = double.tryParse(valorStr);
-    if (valor == null)
+    if (valor == null) {
       return; //iterrompe o método -> caso não consiga converter
+    }
 
     final produto = {"nome": nome, "valor": valor};
     setState(() {
