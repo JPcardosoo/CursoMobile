@@ -1,15 +1,17 @@
-name: biblioteca_app
+name: todo_list_firebase
 description: "A new Flutter project."
 publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.9.2
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.5.0
+  firebase_core: ^4.1.0
+  firebase_auth: ^6.0.2
+  cloud_firestore: ^6.0.1
 
 dev_dependencies:
   flutter_test:

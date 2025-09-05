@@ -1,28 +1,28 @@
 class Livro {
-  final int id;
+  final int? id; 
   final String titulo;
   final String autor;
   final bool disponivel;
 
   Livro({
-    required this.id,
+    this.id, 
     required this.titulo,
     required this.autor,
     required this.disponivel,
   });
 
-  factory Livro.fromJson(Map<String, dynamic> json) {
+  factory Livro.fromMap(Map<String, dynamic> map) {
     return Livro(
-      id: json['id'],
-      titulo: json['titulo'],
-      autor: json['autor'],
-      disponivel: json['disponivel'],
+      id: map['id'], 
+      titulo: map['titulo'],
+      autor: map['autor'],
+      disponivel: map['disponivel'],
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
-      "id": id,
+      if (id != null) "id": id, 
       "titulo": titulo,
       "autor": autor,
       "disponivel": disponivel,
