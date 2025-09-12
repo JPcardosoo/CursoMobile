@@ -14,27 +14,28 @@ class _LoginViewState extends State<LoginView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _emailField = TextEditingController();
   final _senhaField = TextEditingController();
+  bool _ocultarSenha = true;
 
-  void _signIn() async{
+  void _signIn() async {
     try {
       await _auth.signInWithEmailAndPassword(
-        email: _emailField.text.trim(), 
-        password: _senhaField.text);
-      // Verifica se  consegui autenticação no fireBase
-
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Falha ao Fazer Login: $e"))
+        email: _emailField.text.trim(),
+        password: _senhaField.text,
       );
+      // Verifica se  consegui autenticação no fireBase
+      // Direciona automaticamente para a tela de tarefas (AuthView)
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Falha ao Fazer Login: $e")));
     }
   }
 
-  
-  
+  // Build da Tela
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login"),),
+      appBar: AppBar(title: Text("Login")),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -44,22 +45,29 @@ class _LoginViewState extends State<LoginView> {
               decoration: InputDecoration(labelText: "Email"),
               keyboardType: TextInputType.emailAddress,
             ),
-            TextField(
+            TextField( // Criar olho para ver senha
               controller: _senhaField,
-              decoration: InputDecoration(labelText: "Senha"),
-              obscureText: true, // Oculta a senha quando digitada
+              decoration: InputDecoration(
+                labelText: "Senha",
+                suffix: IconButton(
+                  onPressed: ()=>setState(() {
+                    _ocultarSenha = !_ocultarSenha;
+                  }), 
+                  icon: Icon(_ocultarSenha ? Icons.visibility : Icons.visibility_off))),
+                obscureText: _ocultarSenha, // Oculta a senha quando digitada
             ),
-            SizedBox(height: 20,),
-            ElevatedButton(
-              onPressed: _signIn, 
-              child: Text("Login")),
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: _signIn, child: Text("Login")),
             TextButton(
-              onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context)=> RegistroView()) ),
-              child: Text("Não tem uma conta? Registre-se Aqui"))
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RegistroView()),
+              ),
+              child: Text("Não tem uma conta? Registre-se Aqui"),
+            ),
           ],
         ),
-        ),
+      ),
     );
   }
 }

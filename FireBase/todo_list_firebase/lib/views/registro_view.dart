@@ -9,11 +9,13 @@ class RegistroView extends StatefulWidget {
 }
 
 class _RegistroViewState extends State<RegistroView> {
-  // Atributos
+  //atributos
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _emailField = TextEditingController();
   final _senhaField = TextEditingController();
   final _confirmarSenhaField = TextEditingController();
+  bool _coultarSenha = true;
+  bool _ocultarConfirmarSenha = true;
 
   void _registrar() async {
     if (_senhaField.text != _confirmarSenhaField.text) return;
@@ -22,8 +24,9 @@ class _RegistroViewState extends State<RegistroView> {
         email: _emailField.text.trim(),
         password: _senhaField.text,
       );
-      // Após o registro, o usuário já é logado no sistema
+      // Após o registro , u usuário já é logado no sistema
       // AuthView -> Joga ele pra tela de Tarefas
+      Navigator.pop(context); // Fecha a Tela de Registro
     } on FirebaseAuthException catch (e) {
       // Erro especificos do FirebaseAuth
       ScaffoldMessenger.of(
@@ -35,38 +38,37 @@ class _RegistroViewState extends State<RegistroView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Registro")),
+      appBar: AppBar(title: Text('Registro')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
               controller: _emailField,
-              decoration: const InputDecoration(labelText: "E-mail",
-                border: OutlineInputBorder(),
-              ),
+              decoration: InputDecoration(labelText: "Email"),
               keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 16),
             TextField(
               controller: _senhaField,
-              decoration: const InputDecoration(labelText: "Senha",
-                border: OutlineInputBorder(),
-              ),
+              decoration: InputDecoration(labelText: "Senha"),
               obscureText: true,
             ),
-            const SizedBox(height: 16),
             TextField(
               controller: _confirmarSenhaField,
-              decoration: const InputDecoration(labelText: "Confirmar Senha",
-                border: OutlineInputBorder(),
-              ),
+              decoration: InputDecoration(labelText: "Senha"),
               obscureText: true,
             ),
-            const SizedBox(height: 23),
-            ElevatedButton(onPressed: _registrar, child: const Text("Registrar"),
-            ),
+            SizedBox(height: 20),
+            _senhaField.text != _confirmarSenhaField.text
+                ? Text(
+                    "As senhas devem ser Iguais",
+                    style: TextStyle(color: Colors.red),
+                  )
+                : ElevatedButton(
+                    onPressed: _registrar,
+                    child: Text("Registrar"),
+                  ),
+            TextButton(onPressed: () => Navigator.pop, child: Text("Voltar")),
           ],
         ),
       ),
