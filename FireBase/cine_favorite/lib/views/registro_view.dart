@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
 
 class RegistroView extends StatefulWidget {
   const RegistroView({super.key});
@@ -9,50 +9,80 @@ class RegistroView extends StatefulWidget {
 }
 
 class _RegistroViewState extends State<RegistroView> {
-  final _emailController = TextEditingController();
-  final _senhaController = TextEditingController();
+  //atributos
+  final _emailField = TextEditingController();
+  final _senhaField = TextEditingController();
+  final _confSenhaField = TextEditingController();
+  final _authController = FirebaseAuth.instance; //controlador do Firebase Auth
+  bool _senhaOculta = true;
+  bool _confSenhaOculta = true;
 
-  void _registrar() {
-    final email = _emailController.text.trim();
-    final senha = _senhaController.text.trim();
-
-    final sucesso = AuthService.registrar(email, senha);
-
-    if (sucesso) {
-      Navigator.pop(context); // volta para tela de login
+  //método _registrar
+  void _registrar() async{
+    if(_senhaField.text != _confSenhaField.text) return;//interrompe o método se senhas diferentes
+    try {
+      await _authController.createUserWithEmailAndPassword(
+        email: _emailField.text.trim(), 
+        password: _senhaField.text);
+      Navigator.pop(context); //fecha a tela de Registro
+      // é logado automaticamente após o cadastro
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Conta criada com sucesso!")),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Usuário já existe")),
+        SnackBar(content: Text("Falha ao registrar: $e"))
       );
     }
   }
 
+  //build da tela
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Registro")),
+      appBar: AppBar(title: Text("Registro")),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: "Email"),
+              controller: _emailField,
+              decoration: InputDecoration(labelText: "Email"),
+              keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 16),
             TextField(
-              controller: _senhaController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: "Senha"),
+              controller: _senhaField,
+              decoration: InputDecoration(
+                labelText: "Senha",
+                suffix: IconButton(
+                  onPressed: () => setState(() {
+                    _senhaOculta =
+                        !_senhaOculta; //inverte o valor da variável booleana
+                  }),
+                  icon: _senhaOculta
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
+                ),
+              ),
+              obscureText: _senhaOculta,
             ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _registrar,
-              child: const Text("Registrar"),
+            TextField(
+              controller: _confSenhaField,
+              decoration: InputDecoration(
+                labelText: "Senha",
+                suffix: IconButton(
+                  onPressed: () => setState(() {
+                    _confSenhaOculta =
+                        !_confSenhaOculta; //inverte o valor da variável booleana
+                  }),
+                  icon: _confSenhaOculta
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
+                ),
+              ),
+              obscureText: _confSenhaOculta,
             ),
+
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: _registrar, child: Text("Registrar")),
           ],
         ),
       ),

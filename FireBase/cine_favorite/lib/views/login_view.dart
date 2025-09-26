@@ -1,7 +1,6 @@
+import 'package:cine_favorite/views/registro_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
-import 'favorite_view.dart';
-import 'registro_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -11,57 +10,68 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final _emailController = TextEditingController();
-  final _senhaController = TextEditingController();
+  //atributos
+  final _emailField = TextEditingController();
+  final _senhaField = TextEditingController();
+  final _authController = FirebaseAuth.instance; //controller para manipulação do usuário no firebase auth
+  bool _senhaOculta = true;
 
-  void _login() {
-    final email = _emailController.text.trim();
-    final senha = _senhaController.text.trim();
-
-    if (AuthService.login(email, senha)) {
-      Navigator.pushReplacement(
+  //método
+  void _login() async {
+    try {
+      //solicitar a autenticação do usuário
+      await _authController.signInWithEmailAndPassword(
+        email: _emailField.text.trim(),
+        password: _senhaField.text,
+      );
+      //não precisa do Navigator, pois usaremso o StreamBuilder
+      // já faz o direcionamento automático para a tela de tarefas
+    } catch (e) {
+      ScaffoldMessenger.of(
         context,
-        MaterialPageRoute(builder: (context) => const FavoriteView()),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Email ou senha inválidos")),
-      );
+      ).showSnackBar(SnackBar(content: Text("Falha ao Fazer Login $e")));
     }
   }
 
+  //build da Tela
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(title: Text("Login")),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: "Email"),
+              controller: _emailField,
+              decoration: InputDecoration(labelText: "Email"),
+              keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 16),
             TextField(
-              controller: _senhaController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: "Senha"),
+              controller: _senhaField,
+              decoration: InputDecoration(
+                labelText: "Senha",
+                suffix: IconButton(
+                  onPressed: () => setState(() {
+                    _senhaOculta =
+                        !_senhaOculta; //inverte o valor da variável booleana
+                  }),
+                  icon: _senhaOculta
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
+                ),
+              ),
+              obscureText: _senhaOculta,
             ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text("Entrar"),
-            ),
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: _login, child: Text("Login")),
             TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RegistroView()),
-                );
-              },
-              child: const Text("Criar conta"),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RegistroView()),
+              ),
+              child: Text("Não tem uma conta? Registre-se"),
             ),
           ],
         ),

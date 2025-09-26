@@ -1,15 +1,14 @@
-// Classe de modelagem do Obj Movie
-// Recebero os dados da API -> enviar os dados para FireStore
+//classe de modelagem do Obj Movie
+//recebero os dados da API -> enviar os dados para FireStore
 
 class Movie {
-  // Atributos
-  final int id; // Id do Filme no TMDB
-  final String title; // Titulo do Filme
-  final String
-  posterPath; // Caminho da imagem do Poster (path de armazenamento interno)
-  double rating; // Nota que o usuário dará ao filme (de 0 a 5
+  //atributos
+  final int id; //Id do Filme no TMDB
+  final String title; //Titulo do Filme
+  final String posterPath; //caminho da imagem do Poster (path de armazenamento interno)
+  double rating; //nota que o usuário dará ao filme (de 0 a 5)
 
-  // Construtor
+  //construtor
   Movie({
     required this.id,
     required this.title,
@@ -17,8 +16,8 @@ class Movie {
     this.rating = 0.0,
   });
 
-  // Métodos de conversão de obj <=> JSON
-  // toMap OBJ=>Json
+  //métodos de conversão de obj <=> JSON
+  //toMap OBJ=>Json
   Map<String, dynamic> toMap() {
     return {
       "id": id,
@@ -29,6 +28,7 @@ class Movie {
   }
 
   //fromMap Json=>OBJ
+  //fabricando um OBJ a partir da coleção
   factory Movie.fromMap(Map<String,dynamic> map){
     return Movie(
       id: map["id"], 
