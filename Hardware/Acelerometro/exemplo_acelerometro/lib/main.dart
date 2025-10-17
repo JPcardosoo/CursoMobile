@@ -23,7 +23,7 @@ class _AcelerometroScreenState extends State<AcelerometroScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _acelerometroSubscription = accelerometerEventStream().listen((AccelerometerEvent event) {
+    _acelerometroSubscription = accelerometerEventStream().listen((AccelerometerEvent event){
       setState(() {
         _acelerometroValues = <double>[event.x, event.y, event.z];
       });
@@ -38,7 +38,10 @@ class _AcelerometroScreenState extends State<AcelerometroScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Valores do Acelerômetro",)
+            Text("Valores do Acelerômetro"),
+            Text("Eixo X: ${_acelerometroValues?[0]}"),
+            Text("Eixo y: ${_acelerometroValues?[1]}"),
+            Text("Eixo z: ${_acelerometroValues?[2]}"),
           ],
         ),
       ),
